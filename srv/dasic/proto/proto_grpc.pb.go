@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion8
 const (
 	Order_OrderAdd_FullMethodName    = "/proto.Order/OrderAdd"
 	Order_OrderDelete_FullMethodName = "/proto.Order/OrderDelete"
+	Order_OrderUpdate_FullMethodName = "/proto.Order/OrderUpdate"
 )
 
 // OrderClient is the client API for Order service.
@@ -29,6 +30,7 @@ const (
 type OrderClient interface {
 	OrderAdd(ctx context.Context, in *OrderAddReq, opts ...grpc.CallOption) (*OrderAddResp, error)
 	OrderDelete(ctx context.Context, in *OrderDeleteReq, opts ...grpc.CallOption) (*OrderDeleteResp, error)
+	OrderUpdate(ctx context.Context, in *OrderUpdateReq, opts ...grpc.CallOption) (*OrderUpdateResp, error)
 }
 
 type orderClient struct {
@@ -59,12 +61,23 @@ func (c *orderClient) OrderDelete(ctx context.Context, in *OrderDeleteReq, opts 
 	return out, nil
 }
 
+func (c *orderClient) OrderUpdate(ctx context.Context, in *OrderUpdateReq, opts ...grpc.CallOption) (*OrderUpdateResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(OrderUpdateResp)
+	err := c.cc.Invoke(ctx, Order_OrderUpdate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrderServer is the server API for Order service.
 // All implementations must embed UnimplementedOrderServer
 // for forward compatibility
 type OrderServer interface {
 	OrderAdd(context.Context, *OrderAddReq) (*OrderAddResp, error)
 	OrderDelete(context.Context, *OrderDeleteReq) (*OrderDeleteResp, error)
+	OrderUpdate(context.Context, *OrderUpdateReq) (*OrderUpdateResp, error)
 	mustEmbedUnimplementedOrderServer()
 }
 
@@ -77,6 +90,9 @@ func (UnimplementedOrderServer) OrderAdd(context.Context, *OrderAddReq) (*OrderA
 }
 func (UnimplementedOrderServer) OrderDelete(context.Context, *OrderDeleteReq) (*OrderDeleteResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OrderDelete not implemented")
+}
+func (UnimplementedOrderServer) OrderUpdate(context.Context, *OrderUpdateReq) (*OrderUpdateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OrderUpdate not implemented")
 }
 func (UnimplementedOrderServer) mustEmbedUnimplementedOrderServer() {}
 
@@ -127,6 +143,24 @@ func _Order_OrderDelete_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Order_OrderUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServer).OrderUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Order_OrderUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServer).OrderUpdate(ctx, req.(*OrderUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Order_ServiceDesc is the grpc.ServiceDesc for Order service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -141,6 +175,10 @@ var Order_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "OrderDelete",
 			Handler:    _Order_OrderDelete_Handler,
+		},
+		{
+			MethodName: "OrderUpdate",
+			Handler:    _Order_OrderUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

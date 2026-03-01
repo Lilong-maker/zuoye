@@ -46,6 +46,15 @@ func (s *Server) OrderAdd(_ context.Context, in *__.OrderAddReq) (*__.OrderAddRe
 func (s *Server) OrderDelete(_ context.Context, in *__.OrderDeleteReq) (*__.OrderDeleteResp, error) {
 
 	return &__.OrderDeleteResp{
+		Msg:  "订单删除成功",
+		Code: 200,
+	}, nil
+}
+
+// SayHello implements helloworld.GreeterServer
+func (s *Server) OrderUpdate(_ context.Context, in *__.OrderUpdateReq) (*__.OrderUpdateResp, error) {
+
+	return &__.OrderUpdateResp{
 		Msg:  "订单修改成功",
 		Code: 200,
 	}, nil

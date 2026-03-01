@@ -25,7 +25,20 @@ message OrderDeleteResp {
   string msg = 1;
   int64 code =2;
 }
+message OrderUpdateReq {
+  int64 id = 4;
+  string name = 1;
+  fixed32 price = 2;
+  int64 num =3;
+}
+
+message OrderUpdateResp {
+  string msg = 1;
+  int64 code =2;
+}
+
 service Order {
   rpc OrderAdd(OrderAddReq) returns (OrderAddResp);
   rpc OrderDelete(OrderDeleteReq) returns (OrderDeleteResp);
+  rpc OrderUpdate(OrderUpdateReq) returns (OrderUpdateResp);
 }
