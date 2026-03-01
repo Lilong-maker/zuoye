@@ -17,6 +17,7 @@ type Redis struct {
 	Password string
 	Database int
 }
+
 type Mysqls struct {
 	Host     string
 	Port     int
@@ -25,6 +26,19 @@ type Mysqls struct {
 	Database string
 }
 type Redies struct {
+	Host     string
+	Port     int
+	Password string
+	Database int
+}
+type Mysqlss struct {
+	Host     string
+	Port     int
+	User     string
+	Password string
+	Database string
+}
+type Rediess struct {
 	Host     string
 	Port     int
 	Password string
