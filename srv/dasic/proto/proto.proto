@@ -4,41 +4,63 @@ package proto;
 
 option go_package = "./";
 
-message OrderAddReq {
-  string name = 1;
-  fixed32 price = 2;
-  int64 num =3;
+message Order {
+  int64 id = 1;
+  string order_no = 2;
+  int64 user_id = 3;
+  double total_price = 4;
+  int32 status = 5;
+  string create_time = 6;
+  string update_time = 7;
 }
 
-message OrderAddResp {
-  string msg = 1;
-  int64 code =2;
-}
-message OrderDeleteReq {
-  int64 id = 4;
-  string name = 1;
-  fixed32 price = 2;
-  int64 num =3;
+message CreateOrderRequest {
+  int64 user_id = 1;
+  double total_price = 2;
 }
 
-message OrderDeleteResp {
-  string msg = 1;
-  int64 code =2;
-}
-message OrderUpdateReq {
-  int64 id = 4;
-  string name = 1;
-  fixed32 price = 2;
-  int64 num =3;
+message CreateOrderResponse {
+  int64 order_id = 1;
+  string order_no = 2;
 }
 
-message OrderUpdateResp {
-  string msg = 1;
-  int64 code =2;
+message GetOrderRequest {
+  int64 order_id = 1;
 }
 
-service Order {
-  rpc OrderAdd(OrderAddReq) returns (OrderAddResp);
-  rpc OrderDelete(OrderDeleteReq) returns (OrderDeleteResp);
-  rpc OrderUpdate(OrderUpdateReq) returns (OrderUpdateResp);
+message UpdateOrderRequest {
+  int64 order_id = 1;
+  double total_price = 2;
+  int32 status = 3;
+}
+
+message UpdateOrderResponse {
+  bool success = 1;
+}
+
+message DeleteOrderRequest {
+  int64 order_id = 1;
+}
+
+message DeleteOrderResponse {
+  bool success = 1;
+}
+
+message ListOrdersRequest {
+  int64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message ListOrdersResponse {
+  repeated Order orders = 1;
+  int32 total = 2;
+}
+
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc GetOrder(GetOrderRequest) returns (Order);
+  rpc UpdateOrder(UpdateOrderRequest) returns (UpdateOrderResponse);
+  rpc DeleteOrder(DeleteOrderRequest) returns (DeleteOrderResponse);
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
 }

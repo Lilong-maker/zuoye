@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "./";
+
+message OrderAddReq {
+  string name = 1;
+  fixed32 price = 2;
+  int64 num =3;
+}
+
+message OrderAddResp {
+  string msg = 1;
+  int64 code =2;
+}
+message OrderDeleteReq {
+  int64 id = 4;
+  string name = 1;
+  fixed32 price = 2;
+  int64 num =3;
+}
+
+message OrderDeleteResp {
+  string msg = 1;
+  int64 code =2;
+}
+message OrderUpdateReq {
+  int64 id = 4;
+  string name = 1;
+  fixed32 price = 2;
+  int64 num =3;
+}
+
+message OrderUpdateResp {
+  string msg = 1;
+  int64 code = 2;
+}
+message OrderInfo {
+  int64 id = 1;
+  string name = 2;
+  fixed32 price = 3;
+  int64 num = 4;
+}
+message OrderListReq {
+}
+message OrderListResp {
+  string msg = 1;
+  int64 code = 2;
+  repeated OrderInfo orders = 3;
+}
+
+service Order {
+  rpc OrderAdd(OrderAddReq) returns (OrderAddResp);
+  rpc OrderDelete(OrderDeleteReq) returns (OrderDeleteResp);
+  rpc OrderUpdate(OrderUpdateReq) returns (OrderUpdateResp);
+  rpc OrderList(OrderListReq) returns (OrderListResp);
+}
